@@ -3,6 +3,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import json
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import os
+from django.core.mail import send_mail
+import logging
+
+logger = logging.getLogger(__name__)
 
 # Функция для входа
 def login_view(request):
@@ -75,3 +83,10 @@ def skills(request):
 @login_required(login_url='login')
 def feedback(request):
     return render(request, 'main/feedback.html')
+
+@login_required(login_url='login')
+def submit_feedback(request):
+    if request.method == 'POST':
+        # Здесь можно обработать данные формы обратной связи
+        return HttpResponse("Спасибо за ваш отзыв!")
+    return HttpResponse("Метод не поддерживается.", status=405)
