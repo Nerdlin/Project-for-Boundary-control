@@ -43,11 +43,19 @@
     </section>
 
     <div class="gallery">
-        {% for image in images %}
-            <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" class="img-fluid">
-        {% empty %}
-            <p>Галерея пуста.</p>
-        {% endfor %}
+        <form method="post" id="delete-form">
+            {% csrf_token %}
+            {% for image in images %}
+                <div class="gallery-item">
+                    <input type="checkbox" name="delete_images" value="{{ image.id }}">
+                    <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:'Изображение' }}" class="img-fluid">
+                </div>
+            {% empty %}
+                <p>Галерея пуста.</p>
+            {% endfor %}
+            <button type="submit" name="delete_selected" class="btn-delete">Удалить выбранные</button>
+            <button type="submit" name="delete_all" class="btn-delete-all">Удалить все</button>
+        </form>
     </div>
     <div class="arrow arrow-left" onclick="navigateToPrevious()">←</div>
     <div class="arrow arrow-right" onclick="navigateToNext()">→</div>

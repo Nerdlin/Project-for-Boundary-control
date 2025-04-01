@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'main/main.css' %}">
     <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'main/auth.css' %}">
 </head>
 <body>
     <main class="auth-container">
@@ -22,13 +22,9 @@
         <form action="{% url 'login' %}" method="POST" class="auth-form">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Войти</button>
+            <button type="submit" class="btn">Войти</button>
         </form>
         <p>Нет аккаунта? <a href="{% url 'register' %}">Регистрация</a></p>
     </main>
-    <footer>
-        <p>&copy; 2024 Data Science</p>
-        <p>&copy; Коваленко Илья и Медиханов Тимур</p>
-    </footer>
 </body>
 </html>
