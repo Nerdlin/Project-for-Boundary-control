@@ -16,25 +16,29 @@
 </head>
 <body>
     <header>
-        <h1><span class="logo-yellow">Center</span> <span class="logo-white">Data science</span></h1>
+        <h1><span class="logo-yellow">Center</span> <span class="logo-white">Data Science</span></h1>
         <nav class="nav-menu">
             <a href="{% url 'index' %}" class="nav-menu-item" data-hint="Перейти на главную">Главная</a>
             <a href="{% url 'history' %}" class="nav-menu-item" data-hint="Узнайте историю">История</a>
             <a href="{% url 'features' %}" class="nav-menu-item" data-hint="Изучите функции">Функции</a>
             <a href="{% url 'gallery' %}" class="nav-menu-item" data-hint="Посмотреть галерею">Галерея</a>
             <a href="{% url 'skills' %}" class="nav-menu-item" data-hint="Узнать про навыки">Навыки</a>
-            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="nav-menu-item" data-hint="Выйти из аккаунта">Выход</button>
-            </form>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-menu-item" data-hint="Выйти из аккаунта">Выход</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-menu-item" data-hint="Войти в аккаунт">Вход</a>
+            {% endif %}
         </nav>
     </header>
 
     <section class="intro">
         <h2><span class="logo-yellow">Технология</span> будущего</h2>
         <h1><span class="logo-yellow">Data</span> Science</h1>
-        <p>Технология будущего уже здесь. Узнайте больше об Data science и его истории!</p>
-        <a href="/feedback" class="button">Обратная связь</a>
+        <p>Технология будущего уже здесь. Узнайте больше об Data Science и его истории!</p>
+        <a href="{% url 'feedback' %}" class="button">Обратная связь</a>
     </section>
 
     <div class="arrow arrow-right" id="navigateRight" onclick="navigateToNext()">→</div>
@@ -48,16 +52,13 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'main/index.js' %}"></script>
-
     <script>
         document.querySelectorAll('a').forEach(link => {
             if (link.hostname === window.location.hostname) {
                 link.addEventListener('click', function(event) {
                     event.preventDefault();
                     const url = this.href;
-
                     document.body.classList.add('fade-out');
-
                     setTimeout(() => {
                         window.location.href = url;
                     }, 500);

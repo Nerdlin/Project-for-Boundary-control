@@ -21,8 +21,7 @@
         {% endif %}
         <form action="{% url 'register' %}" method="POST" class="auth-form">
             {% csrf_token %}
-            <input type="text" name="username" placeholder="Имя пользователя" required>
-            <input type="password" name="password" placeholder="Пароль" required>
+            {{ form.as_p }}
             <button type="submit">Зарегистрироваться</button>
         </form>
         <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>

@@ -23,7 +23,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 
-from datascience_project.api_app.views import GalleryImageViewSet
+from api_app.views import GalleryImageViewSet
 
 router = DefaultRouter()
 router.register(r'gallery', GalleryImageViewSet)
@@ -35,3 +35,4 @@ urlpatterns = [
     path('feedback/', include('feedback_app.urls')),
     path('api/', include(router.urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

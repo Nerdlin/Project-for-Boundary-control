@@ -10,17 +10,21 @@
 </head>
 <body>
     <header>
-        <h1><span class="logo-yellow">Gallery</span> of</span> Data</span> Science</h1>
+        <h1><span class="logo-yellow">Gallery</span> of Data Science</h1>
         <nav class="nav-menu">
-            <a href="{% url 'index' %}" class="nav-menu-item" data-hint="  Перейти на главную">Главная</a>
+            <a href="{% url 'index' %}" class="nav-menu-item" data-hint="Перейти на главную">Главная</a>
             <a href="{% url 'history' %}" class="nav-menu-item" data-hint="Узнайте историю">История</a>
             <a href="{% url 'features' %}" class="nav-menu-item" data-hint="Изучите функции">Функции</a>
             <a href="{% url 'gallery' %}" class="nav-menu-item" data-hint="Посмотреть галерею">Галерея</a>
             <a href="{% url 'skills' %}" class="nav-menu-item" data-hint="Узнать про навыки">Навыки</a>
-            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="nav-menu-item" data-hint="Выйти из аккаунта">Выход</button>
-            </form>
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-menu-item" data-hint="Выйти из аккаунта">Выход</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-menu-item" data-hint="Войти в аккаунт">Вход</a>
+            {% endif %}
         </nav>
     </header>
 
@@ -28,14 +32,15 @@
         <h1><span class="logo-yellow">Галерея</span> изображений</h1>
     </section>
     <div class="gallery">
-        <img src="{% static 'img/gallery_1.jpg' %}" alt="gallery_1" class="img-fluid">
-        <img src="{% static 'img/gallery_2.jpg' %}" alt="gallery_2" class="img-fluid">
-        <img src="{% static 'img/gallery_3.jpg' %}" alt="gallery_3" class="img-fluid">
-        <img src="{% static 'img/gallery_4.jpg' %}" alt="gallery_4" class="img-fluid">
+        {% for image in images %}
+            <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" class="img-fluid">
+        {% empty %}
+            <p>Галерея пуста.</p>
+        {% endfor %}
     </div>
     <div class="arrow arrow-left" onclick="navigateToPrevious()">←</div>
     <div class="arrow arrow-right" onclick="navigateToNext()">→</div>
-    
+
     <footer>
         <p>© 2024 Data Science</p>
         <p>© Коваленко Илья и Медиханов Тимур</p>
@@ -52,9 +57,7 @@
                 link.addEventListener('click', function(event) {
                     event.preventDefault();
                     const url = this.href;
-
                     document.body.classList.add('fade-out');
-
                     setTimeout(() => {
                         window.location.href = url;
                     }, 500);
@@ -62,6 +65,5 @@
             }
         });
     </script>
-
 </body>
 </html>

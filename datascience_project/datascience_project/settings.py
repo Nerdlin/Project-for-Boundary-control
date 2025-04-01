@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'pages_app',
     'feedback_app',
     'api_app',
-    'rest_framework',  # Django Rest Framework
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -58,8 +58,8 @@ ROOT_URLCONF = 'datascience_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Указываем общую папку templates
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS':True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -115,6 +115,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+AUTH_USER_MODEL = 'auth_app.User'
 
 
 # Static files (CSS, JavaScript, Images)
