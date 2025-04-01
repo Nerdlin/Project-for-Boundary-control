@@ -30,12 +30,16 @@
 
     <section class="content">
         <h1><span class="logo-yellow">Галерея</span> изображений</h1>
-        <!-- Форма для загрузки изображения -->
-        <form method="post" enctype="multipart/form-data" class="upload-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Загрузить фото</button>
-        </form>
+        <!-- Форма для загрузки изображения только для авторизованных -->
+        {% if user.is_authenticated %}
+            <form method="post" enctype="multipart/form-data" class="upload-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Загрузить фото</button>
+            </form>
+        {% else %}
+            <p>Пожалуйста, <a href="{% url 'login' %}">войдите</a>, чтобы загрузить фото.</p>
+        {% endif %}
     </section>
 
     <div class="gallery">

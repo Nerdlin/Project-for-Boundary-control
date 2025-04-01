@@ -127,6 +127,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # В конце settings.py
  # Папка на сервере для хранения медиафайлов
 # Медиафайлы (измените)
+LOGIN_URL = '/auth/login/'  # URL для перенаправления неавторизованных пользователей
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 # Default primary key field type

@@ -1,5 +1,4 @@
-from django.shortcuts import render
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from django.shortcuts import render, redirect
 from .models import GalleryImage
@@ -17,15 +16,16 @@ def features_view(request):
 def skills_view(request):
     return render(request, 'skills.html')
 
+
+@login_required(login_url='login')  # Перенаправляет на страницу входа, если не авторизован
 def gallery_view(request):
     if request.method == 'POST':
-        form = GalleryImageForm(request.POST, request.FILES)  # request.FILES нужен для обработки файлов
+        form = GalleryImageForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()  # Сохраняем изображение в базе данных и на сервере
-            return redirect('gallery')  # Перенаправляем на ту же страницу
+            form.save()
+            return redirect('gallery')
     else:
-        form = GalleryImageForm()  # Пустая форма для GET-запроса
+        form = GalleryImageForm()
 
-    images = GalleryImage.objects.all()  # Получаем все изображения из базы
+    images = GalleryImage.objects.all()
     return render(request, 'gallery.html', {'images': images, 'form': form})
-
