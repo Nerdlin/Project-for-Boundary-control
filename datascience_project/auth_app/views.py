@@ -1,4 +1,3 @@
-# Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from .forms import LoginForm, RegisterForm
@@ -10,6 +9,8 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             return redirect('index')
+        else:
+            print("Login form errors:", form.errors)  # Отладка
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
@@ -21,6 +22,8 @@ def register_view(request):
             user = form.save()
             login(request, user)
             return redirect('index')
+        else:
+            print("Register form errors:", form.errors)  # Отладка
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
