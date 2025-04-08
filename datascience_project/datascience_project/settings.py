@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-a0t7ct_61k0c6sh)rk&&d%dfu&lvi%v%+g&t7ajvd94rq(v4tl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['nerdlinn.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -121,11 +121,10 @@ AUTH_USER_MODEL = 'auth_app.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Укажите путь для хранения статических файлов
+STATIC_URL = '/static/'  # Укажите путь для хранения статических файлов
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Добавьте эту строку
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/home/Nerdlinn/Project-for-Boundary-control/datascience_project/media'
 
 LOGIN_URL = '/auth/login/'  # URL для перенаправления неавторизованных пользователей
 
