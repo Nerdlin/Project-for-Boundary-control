@@ -6,3 +6,5 @@ class GalleryImage(models.Model):
 
     def __str__(self):
         return self.alt_text or "Изображение"
+
+
