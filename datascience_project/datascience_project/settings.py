@@ -121,15 +121,13 @@ AUTH_USER_MODEL = 'auth_app.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# Статические файлы (оставьте как есть)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-# В конце settings.py
- # Папка на сервере для хранения медиафайлов
-# Медиафайлы (измените)
-LOGIN_URL = '/auth/login/'  # URL для перенаправления неавторизованных пользователей
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Укажите путь для хранения статических файлов
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = '/home/Nerdlinn/Project-for-Boundary-control/datascience_project/media'
+
+LOGIN_URL = '/auth/login/'  # URL для перенаправления неавторизованных пользователей
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
