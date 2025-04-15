@@ -1,9 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 # Create your views here.
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import GalleryImage
 from .forms import GalleryImageForm
+from django.contrib.auth import get_user_model  # Импортируем get_user_model
+from feedback_app.models import Feedback  # Убедитесь, что модель Feedback существует
+
+User = get_user_model()  # Получаем пользовательскую модель
 
 @login_required(login_url='login')  # Перенаправляет на страницу входа, если не авторизован
 def index_view(request):
@@ -45,3 +49,15 @@ def gallery_view(request):
         return redirect('gallery')
 
     return render(request, 'gallery.html', {'images': images, 'form': form})
+
+def admin_panel_view(request):
+    users = User.objects.all()  # Используем пользовательскую модель
+    feedbacks = Feedback.objects.all()
+    return render(request, 'pages_app/admin_panel.html', {'users': users, 'feedbacks': feedbacks})
+
+@login_required(login_url='login')
+def user_details_view(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    feedbacks = Feedback.objects.filter(user=user)
+    skills = user.profile.skills.all()  # Предполагается, что у профиля есть связь с навыками
+    return render(request, 'pages_app/user_details.html', {'user': user, 'feedbacks': feedbacks, 'skills': skills})

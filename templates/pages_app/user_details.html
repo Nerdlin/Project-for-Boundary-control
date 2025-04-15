@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали пользователя</title>
+    <link rel="stylesheet" href="{% static 'main/admin_panel.css' %}">
+</head>
+<body>
+    <header>
+        <h1><span class="logo-yellow">Детали пользователя</span></h1>
+    </header>
+    <main>
+        <h2 style="color: #f4b400;">{{ user.username }}</h2>
+        <section>
+            <h3>Сообщения:</h3>
+            <ul>
+                {% for feedback in feedbacks %}
+                    <li>{{ feedback.message }}</li>
+                {% empty %}
+                    <p>Нет сообщений.</p>
+                {% endfor %}
+            </ul>
+        </section>
+        <section>
+            <h3>Навыки:</h3>
+            <ul>
+                {% for skill in skills %}
+                    <li>{{ skill.name }} - {{ skill.get_level_display }}</li>
+                {% empty %}
+                    <p>Нет навыков.</p>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <p>© 2024 Data Science</p>
+    </footer>
+</body>
+</html>
