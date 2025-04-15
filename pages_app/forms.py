@@ -4,4 +4,4 @@ from .models import GalleryImage
 class GalleryImageForm(forms.ModelForm):
     class Meta:
         model = GalleryImage
-        fields = ['image', 'alt_text']  # Поля, которые будут в форме
+        fields = ['image']  # Поля, которые будут в форме

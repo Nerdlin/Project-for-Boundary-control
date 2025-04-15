@@ -26,29 +26,41 @@ def skills_view(request):
     return render(request, 'skills.html')
 
 
-@login_required(login_url='login')  # Перенаправляет на страницу входа, если не авторизован
+@login_required(login_url='login')
 def gallery_view(request):
-    form = GalleryImageForm()  # Инициализируем форму по умолчанию
-    images = GalleryImage.objects.all()
+    form = GalleryImageForm()
+    # Filter images to show only those uploaded by the current user
+    images = GalleryImage.objects.filter(user=request.user)
 
     if request.method == 'POST':
         if 'delete_selected' in request.POST:
             selected_ids = request.POST.getlist('delete_images')
-            GalleryImage.objects.filter(id__in=selected_ids).delete()
-            messages.success(request, "Выбранные изображения удалены.")
+            # Filter out empty strings from selected_ids
+            selected_ids = [id for id in selected_ids if id]
+            if selected_ids:  # Only proceed if there are valid IDs
+                # Only delete images that belong to the current user
+                GalleryImage.objects.filter(id__in=selected_ids, user=request.user).delete()
+                messages.success(request, "Выбранные изображения удалены.")
+            else:
+                messages.info(request, "Не выбрано ни одного изображения для удаления.")
         elif 'delete_all' in request.POST:
-            GalleryImage.objects.all().delete()
+            # Only delete all images that belong to the current user
+            GalleryImage.objects.filter(user=request.user).delete()
             messages.success(request, "Все изображения удалены.")
         else:
             form = GalleryImageForm(request.POST, request.FILES)
             if form.is_valid():
-                form.save()
+                # Associate the image with the current user before saving
+                gallery_image = form.save(commit=False)
+                gallery_image.user = request.user
+                gallery_image.save()
                 messages.success(request, "Изображение успешно загружено.")
             else:
                 messages.error(request, "Ошибка при загрузке изображения.")
         return redirect('gallery')
 
     return render(request, 'gallery.html', {'images': images, 'form': form})
+
 
 def admin_panel_view(request):
     users = User.objects.all()  # Используем пользовательскую модель

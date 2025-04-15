@@ -31,7 +31,6 @@
 
     <section class="content">
         <h1><span class="logo-yellow">Галерея</span> изображений</h1>
-        <!-- Форма для загрузки изображения только для авторизованных -->
         {% if user.is_authenticated %}
             <form method="post" enctype="multipart/form-data" class="upload-form">
                 {% csrf_token %}
@@ -48,16 +47,21 @@
             {% csrf_token %}
             {% for image in images %}
                 <div class="gallery-item">
-                    <input type="checkbox" name="delete_images" value="{{ image.id }}">
+                    <!-- Hidden input to track selection -->
+                    <input type="hidden" name="delete_images" value="" class="delete-input" data-id="{{ image.id }}">
+                    <!-- Button to toggle selection -->
+                    <button type="button" class="delete-toggle-btn" onclick="toggleDeleteSelection(this)">🗑️</button>
                     <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:'Изображение' }}" class="img-fluid">
                 </div>
             {% empty %}
-                <p>Галерея пуста.</p>
             {% endfor %}
-            <button type="submit" name="delete_selected" class="btn-delete">Удалить выбранные</button>
-            <button type="submit" name="delete_all" class="btn-delete-all">Удалить все</button>
+            <div class="delete-buttons">
+                <button type="submit" name="delete_selected" class="btn-delete">Удалить выбранные</button>
+                <button type="submit" name="delete_all" class="btn-delete-all">Удалить все</button>
+            </div>
         </form>
     </div>
+
     <div class="arrow arrow-left" onclick="navigateToPrevious()">←</div>
     <div class="arrow arrow-right" onclick="navigateToNext()">→</div>
 
@@ -84,6 +88,16 @@
                 });
             }
         });
+
+        // Function to toggle delete selection
+        function toggleDeleteSelection(button) {
+            const input = button.previousElementSibling;
+            const isSelected = button.classList.toggle('selected');
+            input.value = isSelected ? input.dataset.id : '';
+            button.style.backgroundColor = isSelected ? '#f44336' : 'rgba(255, 255, 255, 0.8)';
+        }
     </script>
 </body>
 </html>
+
+
