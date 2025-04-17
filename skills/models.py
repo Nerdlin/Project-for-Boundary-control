@@ -1,5 +1,5 @@
 from django.db import models
-from auth_app.models import User
+from auth_app.models import User, Profile  # Импорт модели Profile
 
 # Модель для предопределенного списка навыков
 class SkillCategory(models.Model):
@@ -17,8 +17,9 @@ class UserSkill(models.Model):
         ('want_to_learn', 'Хочу изучить'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_skills')
-    skill = models.ForeignKey(SkillCategory, on_delete=models.CASCADE, related_name='user_skills')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_skills')  # Связь с User
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='user_skills', null=True, default=None)  # Добавлены null=True и default=None
+    skill = models.ForeignKey(SkillCategory, on_delete=models.CASCADE, related_name='user_skills')  # Связь с SkillCategory
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='beginner')
 
     class Meta:

@@ -13,20 +13,35 @@ def profile(request):
     if request.method == 'POST':
         form = UserSkillForm(request.POST)
         if form.is_valid():
-            # Проверяем, не добавляет ли пользователь уже существующий навык
             skill = form.cleaned_data['skill']
             if UserSkill.objects.filter(user=request.user, skill=skill).exists():
                 form.add_error('skill', 'Этот навык уже добавлен.')
             else:
                 user_skill = form.save(commit=False)
                 user_skill.user = request.user
-                user_skill.save()
-                messages.success(request, f'Навык "{user_skill.skill.name}" успешно добавлен.')
+                user_skill.profile = request.user.profile
+                print(f"Сохраняем навык: {user_skill.skill.name}, уровень: {user_skill.level}")  # Отладочное сообщение
+                try:
+                    user_skill.save()
+                    messages.success(request, f'Навык "{user_skill.skill.name}" успешно добавлен.')
+                except Exception as e:
+                    print(f"Ошибка сохранения навыка: {e}")  # Логируем ошибку
+                    form.add_error(None, 'Ошибка сохранения навыка. Попробуйте снова.')
+                    return render(request, 'skills/profile.html', {
+                        'form': form,
+                        'user_skills': user_skills,
+                    })
                 return redirect('profile')
+        else:
+            print("Форма недействительна:", form.errors)  # Отладочное сообщение
     else:
         form = UserSkillForm()
 
-    return render(request, 'skills/profile.html', {'form': form, 'user_skills': user_skills})
+    # Передаем данные в шаблон
+    return render(request, 'skills/profile.html', {
+        'form': form,
+        'user_skills': user_skills,
+    })
 
 
 @login_required

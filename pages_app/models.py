@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 from auth_app.models import User
 
@@ -10,5 +11,8 @@ class GalleryImage(models.Model):
 
     def __str__(self):
         return self.alt_text or "Изображение"
+
+class Feedback(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='pages_app_feedbacks')
 
 
