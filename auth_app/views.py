@@ -5,8 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from .forms import LoginForm, RegisterForm, CustomSetPasswordForm
 import smtplib
-from django.contrib.auth.views import PasswordResetConfirmView
-from django.urls import reverse_lazy
+from .models import User  # Импортируем модель User
 
 def login_view(request):
     if request.method == 'POST':
@@ -45,6 +44,12 @@ class CustomPasswordResetView(PasswordResetView):
     success_url = reverse_lazy('password_reset_done')
 
     def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        # Проверяем, существует ли пользователь с таким email
+        if not User.objects.filter(email=email).exists():
+            messages.error(self.request, "Такой почты не существует.")
+            return self.form_invalid(form)
+
         try:
             return super().form_valid(form)
         except smtplib.SMTPAuthenticationError:
@@ -64,8 +69,8 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'accounts/password_reset_confirm.html'  # Ваш шаблон
-    success_url = reverse_lazy('password_reset_complete')  # Указываем кастомный маршрут
+    template_name = 'accounts/password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
 
     def get_success_url(self):
-        return reverse_lazy('password_reset_complete')  # Переопределяем метод
+        return reverse_lazy('password_reset_complete')
