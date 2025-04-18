@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,6 +42,8 @@ INSTALLED_APPS = [
     'api_app',
     'rest_framework',
     'skills',
+    'custom_admin',
+
 ]
 
 MIDDLEWARE = [

@@ -21,8 +21,6 @@ from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from django.contrib.auth import views as auth_views
 from django.contrib.admin.views.decorators import staff_member_required
-from pages_app.views import admin_panel_view  # Импортируем новый view
-from pages_app.views import user_details_view
 
 from api_app.views import GalleryImageViewSet
 
@@ -36,11 +34,10 @@ urlpatterns = [
     path('feedback/', include('feedback_app.urls')),
     path('api/', include(router.urls)),
     path('user/', include('skills.urls')),
+    path('admin-panel/', include('custom_admin.urls', namespace='custom_admin')),
     path('auth/password_reset/', auth_views.PasswordResetView.as_view(template_name='accounts/password_reset.html'), name='password_reset'),
     path('auth/password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('auth/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('auth/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
-    path('admin-panel/', staff_member_required(admin_panel_view), name='admin_panel'),
-    path('user/<int:user_id>/', user_details_view, name='user_details'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

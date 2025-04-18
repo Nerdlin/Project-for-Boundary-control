@@ -11,3 +11,4 @@ def feedback_view(request):
     else:
         form = FeedbackForm()
     return render(request, 'feedback.html', {'form': form})
+

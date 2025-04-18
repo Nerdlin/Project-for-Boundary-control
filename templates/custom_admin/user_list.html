@@ -1,0 +1,71 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block content %}
+    <h2>Список <span class="logo-yellow">Пользователей</span></h2>
+    <form class="filter-form" method="GET">
+        <input type="text" name="q" value="{{ query }}" placeholder="Поиск по email">
+        <select name="status">
+            <option value="">Все статусы</option>
+            <option value="admin" {% if status_filter == 'admin' %}selected{% endif %}>Администраторы</option>
+            <option value="regular" {% if status_filter == 'regular' %}selected{% endif %}>Обычные пользователи</option>
+            <option value="superuser" {% if status_filter == 'superuser' %}selected{% endif %}>Суперпользователи</option>
+        </select>
+        <button type="submit">Фильтровать</button>
+    </form>
+
+    <h3>Администраторы</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Email</th>
+                <th>Является админом</th>
+                <th>Суперпользователь</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in admin_users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.is_staff|yesno:"Да,Нет" }}</td>
+                    <td>{{ user.is_superuser|yesno:"Да,Нет" }}</td>
+                    <td><a href="{% url 'custom_admin:edit_user' user.id %}" class="button">Редактировать</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">Нет администраторов</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Обычные пользователи</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Имя пользователя</th>
+                <th>Email</th>
+                <th>Является админом</th>
+                <th>Суперпользователь</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in regular_users %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.is_staff|yesno:"Да,Нет" }}</td>
+                    <td>{{ user.is_superuser|yesno:"Да,Нет" }}</td>
+                    <td><a href="{% url 'custom_admin:edit_user' user.id %}" class="button">Редактировать</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">Нет обычных пользователей</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

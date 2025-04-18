@@ -1,0 +1,10 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block content %}
+    <h2> Добро пожаловать в<span class="logo-yellow">Админ-панель</span></h2>
+    <p>Управляйте пользователями и отзывами с помощью навигации выше.</p>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'custom_admin:user_list' %}" class="button">Просмотреть пользователей</a>
+        <a href="{% url 'custom_admin:feedback_list' %}" class="button">Просмотреть отзывы</a>
+    </div>
+{% endblock %}

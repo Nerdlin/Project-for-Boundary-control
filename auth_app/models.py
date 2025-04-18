@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 class User(AbstractUser):
+    email = models.EmailField(unique=True, max_length=254, blank=False, null=False)
     groups = models.ManyToManyField(
         Group,
         related_name="custom_user_set",
@@ -20,12 +21,11 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     bio = models.TextField(blank=True, null=True)
-    skills = models.ManyToManyField('skills.SkillCategory', through='skills.UserSkill', related_name='profiles')  # Используем строковую ссылку
+    skills = models.ManyToManyField('skills.SkillCategory', through='skills.UserSkill', related_name='profiles')
 
     def __str__(self):
         return f"Профиль пользователя {self.user.username}"
 
-# Создайте профиль автоматически при создании пользователя
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:

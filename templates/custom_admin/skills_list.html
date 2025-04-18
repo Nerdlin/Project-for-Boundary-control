@@ -1,0 +1,52 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block content %}
+    <h2>Список <span class="logo-yellow">Навыков</span></h2>
+    <form class="filter-form" method="GET">
+        <input type="text" name="q" value="{{ query }}" placeholder="Поиск по имени пользователя">
+        <select name="user">
+            <option value="">Все пользователи</option>
+            {% for user in users %}
+                <option value="{{ user.id }}" {% if user_filter == user.id|stringformat:"s" %}selected{% endif %}>{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        <select name="skill">
+            <option value="">Все категории навыков</option>
+            {% for category in skill_categories %}
+                <option value="{{ category.id }}" {% if skill_filter == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="level">
+            <option value="">Все уровни</option>
+            {% for level, label in level_choices %}
+                <option value="{{ level }}" {% if level_filter == level %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Фильтровать</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Навык</th>
+                <th>Уровень</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for skill in skills %}
+                <tr>
+                    <td>{{ skill.user.username }}</td>
+                    <td>{{ skill.skill.name }}</td>
+                    <td>{{ skill.get_level_display }}</td>
+                    <td><a href="{% url 'custom_admin:edit_skill' skill.id %}" class="button">Редактировать</a></td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="4">Нет навыков</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
