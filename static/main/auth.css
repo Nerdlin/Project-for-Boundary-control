@@ -7,7 +7,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .auth-container {
@@ -25,6 +29,24 @@ body {
     color: #f4b400;
 }
 
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-form .form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.auth-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #fff;
+}
+
 .auth-form input {
     width: 100%;
     padding: 10px;
@@ -33,7 +55,12 @@ body {
     border-radius: 5px;
     background-color: #333;
     color: white;
-    box-sizing: border-box; /* Исправление для корректного отображения бордеров */
+    box-sizing: border-box;
+}
+
+.auth-form input:focus {
+    border-color: #f4b400;
+    outline: none;
 }
 
 .auth-form .btn {
@@ -52,13 +79,52 @@ body {
     background-color: #d9a100;
 }
 
+.error {
+    color: #ff4d4d;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.messages {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 10px;
+    border-radius: 5px;
+    background: #ff4d4d;
+    color: white;
+    text-align: center;
+    margin-bottom: 15px;
+
+}
+
+p {
+    color: #ddd;
+    margin-top: 15px;
+}
+
+p a {
+    color: #f4b400;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    color: #d9a100;
+}
+
 footer {
     margin-top: 20px;
     font-size: 12px;
     color: #aaa;
-    text-align: center; /* Центрируем текст */
-    line-height: 1.5; /* Добавляем гармоничный интервал между строками */
-    padding: 10px; /* Добавляем отступы */
-    max-width: 400px; /* Ограничиваем ширину */
-    margin: 20px auto 0 auto; /* Центрируем футер */
+    text-align: center;
+    line-height: 1.5;
+    padding: 10px;
+    max-width: 400px;
+    margin: 20px auto 0 auto;
 }
