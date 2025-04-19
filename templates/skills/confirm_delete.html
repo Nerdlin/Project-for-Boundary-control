@@ -1,98 +1,98 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Подтверждение удаления - Data Science</title>
-    <link rel="stylesheet" href="{% static 'main/index.css' %}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <style>
-        .confirm-btn, .cancel-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            font-size: 16px;
-            margin: 0 10px;
-        }
-        .confirm-btn {
-            background-color: #ff5555;
-            color: #fff;
-        }
-        .confirm-btn:hover {
-            background-color: #e64444;
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
-        }
-        .cancel-btn {
-            background-color: #f4b400;
-            color: #000;
-        }
-        .cancel-btn:hover {
-            background-color: #d9a100;
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgb(0, 255, 255);
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <h1><span class="logo-yellow">Center</span> <span class="logo-white">Data Science</span></h1>
-        <nav class="nav-menu">
-            <a href="{% url 'index' %}" class="nav-menu-item" data-hint="Перейти на главную">Главная</a>
-            <a href="{% url 'history' %}" class="nav-menu-item" data-hint="Узнайте историю">История</a>
-            <a href="{% url 'features' %}" class="nav-menu-item" data-hint="Изучите функции">Функции</a>
-            <a href="{% url 'gallery' %}" class="nav-menu-item" data-hint="Посмотреть галерею">Галерея</a>
-            <a href="{% url 'skills' %}" class="nav-menu-item" data-hint="Узнать про навыки">Навыки</a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" class="nav-menu-item" data-hint="Посмотреть профиль">Профиль</a>
-                <form action="{% url 'logout' %}" method="POST" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="nav-menu-item" data-hint="Выйти из аккаунта">Выход</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}" class="nav-menu-item" data-hint="Войти в аккаунт">Вход</a>
-            {% endif %}
-        </nav>
-    </header>
+  <!DOCTYPE html>
+  <html lang="ru">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Подтверждение удаления - Data Science</title>
+      <link rel="stylesheet" href="{% static 'main/index.css' %}">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+      <style>
+          .confirm-btn, .cancel-btn {
+              padding: 10px 20px;
+              border: none;
+              border-radius: 50px;
+              font-weight: bold;
+              cursor: pointer;
+              transition: transform 0.3s ease, box-shadow 0.3s ease;
+              font-size: 16px;
+              margin: 0 10px;
+          }
+          .confirm-btn {
+              background-color: #ff5555;
+              color: #fff;
+          }
+          .confirm-btn:hover {
+              background-color: #e64444;
+              transform: scale(1.05);
+              box-shadow: 0 0 10px rgba(255, 85, 85, 0.5);
+          }
+          .cancel-btn {
+              background-color: #f4b400;
+              color: #000;
+          }
+          .cancel-btn:hover {
+              background-color: #d9a100;
+              transform: scale(1.05);
+              box-shadow: 0 0 10px rgb(0, 255, 255);
+          }
+      </style>
+  </head>
+  <body>
+      <header>
+          <h1><span class="logo-yellow">Center</span> <span class="logo-white">Data Science</span></h1>
+          <nav class="nav-menu">
+              <a href="{% url 'index' %}" class="nav-menu-item" data-hint="Перейти на главную">Главная</a>
+              <a href="{% url 'history' %}" class="nav-menu-item" data-hint="Узнайте историю">История</a>
+              <a href="{% url 'features' %}" class="nav-menu-item" data-hint="Изучите функции">Функции</a>
+              <a href="{% url 'gallery' %}" class="nav-menu-item" data-hint="Посмотреть галерею">Галерея</a>
+              <a href="{% url 'skills' %}" class="nav-menu-item" data-hint="Узнать про навыки">Навыки</a>
+              {% if user.is_authenticated %}
+                  <a href="{% url 'skills:profile' %}" class="nav-menu-item" data-hint="Посмотреть профиль">Профиль</a>
+                  <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="nav-menu-item" data-hint="Выйти из аккаунта">Выход</button>
+                  </form>
+              {% else %}
+                  <a href="{% url 'login' %}" class="nav-menu-item" data-hint="Войти в аккаунт">Вход</a>
+              {% endif %}
+          </nav>
+      </header>
 
-    <main>
-        <section style="margin: 20px 5%; padding: 20px; border: 2px solid #f4b400; border-radius: 15px; background-color: #1a1a1a;">
-            <h2 style="color: #f4b400;">Подтверждение удаления</h2>
-            <p style="color: #ddd;">Вы уверены, что хотите удалить навык <strong>{{ user_skill.skill.name }}</strong> ({{ user_skill.get_level_display }})?</p>
-            <form method="post" style="margin-top: 20px;">
-                {% csrf_token %}
-                <button type="submit" class="confirm-btn">Удалить</button>
-                <a href="{% url 'profile' %}" class="cancel-btn">Отмена</a>
-            </form>
-        </section>
-    </main>
+      <main>
+          <section style="margin: 20px 5%; padding: 20px; border: 2px solid #f4b400; border-radius: 15px; background-color: #1a1a1a;">
+              <h2 style="color: #f4b400;">Подтверждение удаления</h2>
+              <p style="color: #ddd;">Вы уверены, что хотите удалить навык <strong>{{ user_skill.skill.name }}</strong> ({{ user_skill.get_level_display }})?</p>
+              <form method="post" style="margin-top: 20px;">
+                  {% csrf_token %}
+                  <button type="submit" class="confirm-btn">Удалить</button>
+                  <a href="{% url 'skills:profile' %}" class="cancel-btn">Отмена</a>
+              </form>
+          </section>
+      </main>
 
-    <footer>
-        <p>© 2024 Data Science</p>
-        <p>© Коваленко Илья и Медиханов Тимур</p>
-    </footer>
+      <footer>
+          <p>© 2024 Data Science</p>
+          <p>© Коваленко Илья и Медиханов Тимур</p>
+      </footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'main/index.js' %}"></script>
-    <script>
-        document.querySelectorAll('a').forEach(link => {
-            if (link.hostname === window.location.hostname) {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const url = this.href;
-                    document.body.classList.add('fade-out');
-                    setTimeout(() => {
-                        window.location.href = url;
-                    }, 500);
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="{% static 'main/index.js' %}"></script>
+      <script>
+          document.querySelectorAll('a').forEach(link => {
+              if (link.hostname === window.location.hostname) {
+                  link.addEventListener('click', function(event) {
+                      event.preventDefault();
+                      const url = this.href;
+                      document.body.classList.add('fade-out');
+                      setTimeout(() => {
+                          window.location.href = url;
+                      }, 500);
+                  });
+              }
+          });
+      </script>
+  </body>
+  </html>
